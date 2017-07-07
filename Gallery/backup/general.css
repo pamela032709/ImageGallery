@@ -1,0 +1,168 @@
+
+.galleryContainer {
+  /* To fix the sizing of the table when the width approaches the media query min-width */
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: border-box
+}
+
+html, body {
+  width: 100%;
+  font-family: sans-serif;
+}
+
+label{
+
+font-family: sans-serif;
+
+}
+
+h3 {
+  text-align: center;
+  font-size: 1.65em;
+  margin: 0 0 30px;
+}
+
+div {
+  /*display: flex;
+  flex-wrap: wrap;*/
+}
+
+
+figure {
+  margin: 0;
+  overflow: hidden;
+}
+
+figcaption {
+  margin-top: 15px;
+}
+
+img {
+  border: none;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  background: #ccc;
+  transition: transform .2s ease-in-out;
+}
+
+.p a {
+  display: inline;
+  font-size: 13px;
+  margin: 0;
+  text-decoration: underline;
+  color: blue;
+}
+
+.p {
+  text-align: center;
+  font-size: 13px;
+  padding-top: 100px;
+}
+
+.image-wrapper {
+  display: inline-block;
+  cursor: pointer;
+  width: 150px;
+  padding top: 5px;
+}
+
+.image-wrapper .title {
+  display: none;
+
+}
+
+.selected {
+  
+}
+
+#main-image-block {
+  position: relative;
+  width: 900px;
+  height: calc( 506.25px + 20px );
+  display: inline-block;
+}
+
+#main-image-wrapper {
+  width: 100%;
+  height: calc( 100% - 20px );
+  display: inline-block;
+  overflow: hidden;
+  transition: transform .2s ease-in-out;
+}
+
+#main-image-wrapper img {
+  width: 100%;
+}
+
+.thumbnails {
+  display: inline-block;
+}
+
+/*
+buttons*/
+
+.button-display-left{
+  user-select: none;
+  color: #fff!important;
+  background-color: #000!important;
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  transform: translate(0%,-50%);
+  border: none;
+  display: inline-block;
+  outline: 0;
+  padding: 8px 16px;
+  vertical-align: middle;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  background-color: inherit;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.button-display-right{
+  user-select: none;
+  color: #fff!important;
+  background-color: #000!important;
+  position: absolute;
+  top: 50%;
+  right: 0%;
+  transform: translate(0%,-50%);
+  border: none;
+  display: inline-block;
+  outline: 0;
+  padding: 8px 16px;
+  vertical-align: middle;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  background-color: inherit;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+
+/*pagination */
+.pagination {
+    display: inline-block;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+.selected-page{
+  color: #fff!important;
+  background-color: #000!important;
+}
+  

@@ -1,0 +1,41 @@
+Installation 
+
+If access to apache server is not available, is good to download MAMP free version. However, it is an html file so it will run on any browser. 
+
+It is very easy since is only one page that can be scalable to new features.
+Variables use meaningful names, classes use appropriate naming conventions.  
+The only situation that will make this code time consuming will be to transition from the API  to sql . However, this will add a better performance. 
+Also, the library is open source can be use without any additional expense. 
+
+
+ There are several validation points that help debugging faster and more intuitive.  All validation points contain a clear structure and execute accordingly.
+
+Libraries :
+TinySlideShow.js
+Frameworks:
+JQuery 
+Bootstrap 
+Language
+JS
+
+
+
+
+
+
+
+
+
+
+Output: 
+
+
+
+
+
+
+
+
+
+
+

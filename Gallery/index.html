@@ -1,0 +1,220 @@
+<!DOCTYPE HTML>
+
+	<head>
+		<title>JavaScript Slideshow - Gallery</title>
+		<link rel="stylesheet" href="TinySlideshow/style.css" />
+	</head>
+	<body>
+
+		
+		<div class='option'>
+		       
+		    <div class="sub-info">
+		        <div class='row'>
+		         	<div class="col-md-6">
+
+					<form method="get" id="search-form">
+				  		<input name="search" type="text" size="40" placeholder="Search..." />
+						<input type="submit" value="Go"/>
+
+						<label class ="labelFont">Sort By:</label>
+						<select name="sort" onchange="jQuery( '#search-form' ).submit( )">
+							<option value="default" >None</option>
+							<option id="title-sort-option" value="title">Title</option>
+						</select>
+
+						<input id="page-input-field" name="page" type="hidden" value="" />
+					</form>
+
+					</div><!-- option --> 
+				</div><!-- sub-info -->
+			</div><!-- row -->
+		</div><!-- column -->
+
+
+		<ul id="slideshow"></ul>
+
+		<div id="wrapper">
+			<div id="fullsize">
+				<div id="imgprev" class="imgnav" title="Previous Image"></div>
+				<div id="imglink"></div>
+				<div id="imgnext" class="imgnav" title="Next Image"></div>
+				<div id="image"></div>
+				<div id="information">
+					<h3></h3>
+					<p></p>
+				</div>
+			</div>
+			<div id="thumbnails">
+				<div id="slideleft" title="Slide Left"></div>
+				<div id="slidearea">
+					<div id="slider"></div>
+				</div>
+				<div id="slideright" title="Slide Right"></div>
+			</div>
+		</div>
+       
+     <div class = "content">
+		<div class="pagination"  style="text-align:center ">
+			
+			<a id="previous-pages-link" href="">&laquo;</a>
+
+			<div id="page-link-list"  >
+				
+			</div>
+
+			<a id="next-pages-link" href="">&raquo;</a>
+		</div>
+	</div>
+
+		<script src ="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="TinySlideshow/compressed.js"></script>
+		<script>
+			function UrlToJson( strUrl )
+			{
+			    var strHash;
+			    var UrlJson = { };
+			    var aHashes = strUrl.slice( strUrl.indexOf( "?" ) + 1 ).split( "&" );
+			    for( var intIndex = 0; intIndex < aHashes.length; intIndex += 1 )
+				{
+			        strHash = aHashes[ intIndex ].split( "=" );
+			        UrlJson[ strHash[ 0 ] ] = decodeURIComponent( strHash[ 1 ] ).replace( /\+/g, ' ' );
+			    }
+				
+			    return UrlJson;
+			}
+
+
+			var itemsPerPage = 6;
+			var pagesPerPage = 5;
+			
+
+			jQuery.getJSON( "http://jsonplaceholder.typicode.com/photos", function( data ) {
+
+				data = handleResponse( data );
+				createSlideshow( data );
+
+			} );
+
+			// Handle searching, sorting, and pagination
+			function handleResponse( data )
+			{
+
+				var imageCount = data.length;
+				var page = 1;
+				var searchPhrase = "";
+				var sortOption = "";
+
+				// URL parameters
+				var url = UrlToJson( window.location.href );
+
+				if( typeof( url.page ) != "undefined" )
+					page = parseInt( url.page );
+
+				jQuery( "#page-input-field" ).attr( "value", page );
+
+				searchPhrase = url.search;
+
+				sortOption = url.sort;
+
+				// If the user is searching
+				if( searchPhrase != "" )
+				{
+					for( var index = 0; index < imageCount; index += 1 )
+					{
+						var object = data[ index ];
+
+						if( object.title == searchPhrase )
+						{
+							console.log( "found" );
+							data = [ object ];
+
+							page = 1;
+							break;
+						}
+					}
+				}
+
+				// The number of images after searching
+				imageCount = data.length;
+				if( itemsPerPage > imageCount ) itemsPerPage = imageCount;
+
+				if( sortOption == "title" )
+					jQuery( "#title-sort-option" ).attr( "selected", "selected" );
+
+				// sorting function by title
+				if( sortOption == "title" )
+				{
+					data = data.sort( function( a, b ) {
+						return a.title.localeCompare( b.title );
+					} );
+				}
+
+
+
+				var previousPage = page - pagesPerPage;
+				if( previousPage < 1 ) previousPage = 1;
+
+				var nextPage = page + pagesPerPage;
+				if( nextPage > imageCount ) nextPage = imageCount;
+
+				// URL parameter strings
+				var previousPageString = "page=" + previousPage;
+				var nextPageString = "page=" + nextPage;
+				var pageString = "page=" + page;
+				var searchString = "search=";
+				var sortString = "sort=";
+
+				jQuery( "#previous-pages-link" ).attr( "href", "index.html?" + previousPageString + "&" + searchString + "&" + sortString );
+				jQuery( "#next-pages-link" ).attr( "href", "index.html?" + nextPageString + "&" + searchString + "&" + sortString );
+
+				var offset = parseInt( pagesPerPage / 2 );
+				if( page <= offset ) offset = page - 1;
+				if( page >= imageCount - offset ) offset = imageCount - offset;
+
+				for( var index = ( page - offset ); index < ( page + pagesPerPage - offset ); index += 1 )
+				{
+					var selectedClass = "";
+					if( index == page ) selectedClass = "selected-page";
+
+					jQuery( "#page-link-list" ).append( "<a class='" + selectedClass + "' href='index.html?page=" + index + "&" + searchString + "&" + sortString + "'>" + index + "</a>" );
+
+				}
+
+				return data;
+			}
+
+			// Create the HTML elements for the slideshow
+			function createSlideshow( data )
+			{
+				for( var index = 0; index < itemsPerPage; index ++ )
+				{
+					var imageObject = data[ index ];
+					var listItem = jQuery( "<li>" );
+					listItem.append( "<h3>" + imageObject.title + "</h3>" );
+					listItem.append( "<span>" + imageObject.url + "</span>" );
+					listItem.append( "<p></p>" );
+					listItem.append( "<img src='" + imageObject.thumbnailUrl + "' alt='Error: No image'>" );
+
+					jQuery( "#slideshow" ).append( listItem );
+				}
+
+				$('slideshow').style.display='none';
+				$('wrapper').style.display='block';
+				slideshow=new TINY.slideshow("slideshow");
+				
+				slideshow.auto=true;
+				slideshow.speed=5;
+				slideshow.link="linkhover";
+				slideshow.info="information";
+				slideshow.thumbs="slider";
+				slideshow.left="slideleft";
+				slideshow.right="slideright";
+				slideshow.scrollSpeed=4;
+				slideshow.spacing=5;
+				slideshow.active="#fff";
+				slideshow.init("slideshow","image","imgprev","imgnext","imglink");
+			}
+		</script>
+	</body>
+</html>
